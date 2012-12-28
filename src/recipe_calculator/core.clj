@@ -9,7 +9,7 @@
                :zucker 9000
                :mehl 18000
                :eier 195
-               :mandeln 775}
+               :mandeln 7750}
         solutions (solver/solve stock)]
     (doseq [solution solutions]
       (println solution))))
