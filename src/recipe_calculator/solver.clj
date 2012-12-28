@@ -43,11 +43,14 @@
 
 (defn solve
   "Decides which recipes are needed to clear the stock."
-  [stock]
-  (if (stock-empty? stock)
-    [[]]
-    (apply concat
-      (for [recipe (keys recipes)
-            :let [new-stock (bake stock recipe)]
-            :when (stock-valid? new-stock)]
-        (map #(conj % recipe) (solve new-stock))))))
+  ([stock]
+    (map frequencies (solve stock (keys recipes))))
+  ([stock untested-recipes]
+    (if (stock-empty? stock)
+      [[]]
+      (apply concat
+        (for [recipe untested-recipes
+              :let [new-stock (bake stock recipe)]
+              :when (stock-valid? new-stock)]
+          (map #(conj % recipe)
+               (solve new-stock (drop-while #(not (= recipe %)) untested-recipes))))))))
